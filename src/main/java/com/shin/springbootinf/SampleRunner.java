@@ -16,6 +16,7 @@ public class SampleRunner implements ApplicationRunner {
         System.out.println(shinProperties.getName());
         System.out.println(shinProperties.getAge());
         System.out.println(shinProperties.getFullName());
+        System.out.println(shinProperties.getSesstionTimeout());
         System.out.println("=========================");
     }
 }
