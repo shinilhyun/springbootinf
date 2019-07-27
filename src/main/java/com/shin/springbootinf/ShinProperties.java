@@ -3,6 +3,9 @@ package com.shin.springbootinf;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * type safe 하게 properties 사용
+ */
 @Component
 @ConfigurationProperties("shin")
 public class ShinProperties {
