@@ -30,6 +30,8 @@
 -------------------
 * 덮어쓰기 방지하기
     * @ConditioanlOnMissingBean
+<p>
+
 * 빈 재정의 수고 덜기
     * @ConfigurationProperties("shin ")
     * @EnableConfigurationProperties("ShinProperties)
@@ -60,7 +62,7 @@ Reference :  <https://docs.spring.io/spring-boot/docs/current/reference/htmlsing
 
 ---     
 외부설정
----
+----------------
 Reference : <https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config> 
  
  사용할 수 있는 외부 설정 
@@ -99,15 +101,16 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
     3. classpath:/config/ 
     4. classpath:/ 
  
-랜덤값 설정하기 
- * ${random.*} 
+* 랜덤값 설정하기 
+    * ${random.*} 
  
-플레이스 홀더 
- * name = ilhyun 
- * fullName = ${name} shin
+ 
+* 플레이스 홀더 
+     * name = ilhyun 
+     * fullName = ${name} shin
  
 <br>
-타입-세이프 프로퍼티 @ConfigurationProperties
+ 타입-세이프 프로퍼티 @ConfigurationProperties
   
     * 여러 프로퍼티를 묶어서 읽어올 수 있음 
     * 빈으로 등록해서 다른 빈에 주입할 수 있음 
@@ -128,7 +131,7 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
         * SpEL 을 사용할 수 있지만... 
         * 위에 있는 기능들은 전부 사용 못함. 
   
----
+--- ---
 프로파일 
 ---
 
@@ -141,20 +144,19 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
     * spring.profiles.include 프로파일용 프로퍼티 
     * application-{profile}.properties 
 
----
+--- ---
 로깅
----
+------
 
-로깅 퍼사드 VS 로거
+####로깅 퍼사드 VS 로거
 * Commons Logging, SLF4j
 * JUL, Log4J2, Logback
+
+    _최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서)_
+    
 <br>
-_최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서)_
 
-
-<BR>
-
-스프링 5에 로거 관련 변경 사항
+#### 스프링 5에 로거 관련 변경 사항
 * https://docs.spring.io/spring/docs/5.0.0.RC3/spring-framework-reference/overview.html#overview-logging
 * Spring-JCL
     * Commons Logging -> SLF4j or Log4j2
@@ -162,7 +164,7 @@ _최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서
 
 <BR>
 
-스프링 부트 로깅
+####스프링 부트 로깅
 * 기본 포맷
 * --debug (일부 핵심 라이브러리만 디버깅 모드로)
 * --trace (전부 다 디버깅 모드로)
@@ -170,7 +172,10 @@ _최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서
 * 파일 출력: logging.file 또는 logging.path
 * 로그 레벨 조정: logging.level.패지키 = 로그 레벨
 
-커스텀 로그 설정 파일 사용하기 : https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html 
+<br>
+
+####커스텀 로그 설정 파일 사용하기 
+https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html 
 * Logback: logback-spring.xml(이거 추천.. Logback extention 사용가능)
     ~~~
     <?xml version="1.0" encoding="UTF-8"?>
@@ -185,10 +190,14 @@ _최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서
     * 프로파일 <springProfile name=”프로파일”>
     * Environment 프로퍼티 <springProperty>
     
-로거를 Log4j2로 변경하기
+<br>
+
+####로거를 Log4j2로 변경하기
 * https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html#howto-configure-log4j-for-logging
+
+######의존성 exclusion 및 추가
 ~~~
-<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <exclusions>
@@ -204,5 +213,7 @@ _최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 ~~~
+
+-------
 
 
