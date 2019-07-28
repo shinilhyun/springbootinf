@@ -140,3 +140,69 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
     * spring.profiles.active 어떤 프로파일을 추가할 것인가? 
     * spring.profiles.include 프로파일용 프로퍼티 
     * application-{profile}.properties 
+
+---
+로깅
+---
+
+로깅 퍼사드 VS 로거
+* Commons Logging, SLF4j
+* JUL, Log4J2, Logback
+<br>
+_최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서)_
+
+
+<BR>
+
+스프링 5에 로거 관련 변경 사항
+* https://docs.spring.io/spring/docs/5.0.0.RC3/spring-framework-reference/overview.html#overview-logging
+* Spring-JCL
+    * Commons Logging -> SLF4j or Log4j2
+    * pom.xml에 exclusion 안해도 됨.
+
+<BR>
+
+스프링 부트 로깅
+* 기본 포맷
+* --debug (일부 핵심 라이브러리만 디버깅 모드로)
+* --trace (전부 다 디버깅 모드로)
+* 컬러 출력: spring.output.ansi.enabled
+* 파일 출력: logging.file 또는 logging.path
+* 로그 레벨 조정: logging.level.패지키 = 로그 레벨
+
+커스텀 로그 설정 파일 사용하기 : https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html 
+* Logback: logback-spring.xml(이거 추천.. Logback extention 사용가능)
+    ~~~
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+        <include resource="org/springframework/boot/logging/logback/base.xml"/>
+        <logger name="com.shin" level="DEBUG"/>
+    </configuration>
+    ~~~
+* Log4J2: log4j2-spring.xml
+* JUL (비추): logging.properties
+* Logback extension
+    * 프로파일 <springProfile name=”프로파일”>
+    * Environment 프로퍼티 <springProperty>
+    
+로거를 Log4j2로 변경하기
+* https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html#howto-configure-log4j-for-logging
+~~~
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>org.springframework.boot:spring-boot-starter-logging:2.1.6.RELEASE</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+~~~
+
+
