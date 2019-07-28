@@ -8,7 +8,7 @@
 ---
  
 * [스프링 부트 핵심 기능](#스프링-부트-핵심-기능) 
-    * [자동 설정 만들기 @ConfigurationProperties](#자동-설정-만들기-@ConfigurationProperties)
+    * [자동 설정 만들기](#자동-설정-만들기)
     * [SpringApplication](#SpringApplication) 
     * [외부설정](#외부설정) 
     * [프로파일](#프로파일) 
@@ -28,8 +28,9 @@
 스프링 부트 핵심 기능
 ===
 
-자동 설정 만들기 @ConfigurationProperties
+자동 설정 만들기
 -------------------
+* @ConfigurationProperties
 * 덮어쓰기 방지하기
     * @ConditioanlOnMissingBean
 <p>
