@@ -130,7 +130,7 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
 ---
 프로파일 
 ---
-
+#ef06ad89aab2edc9d286b61697ff3409908d5a41
 * @Profile 애노테이션은 어디에? 
     * @Configuration 
     * @Component 
