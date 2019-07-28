@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -18,7 +19,9 @@ import java.time.temporal.ChronoUnit;
 public class ShinProperties {
     @NotEmpty
     private String name;
+
     private int age;
+
     private String fullName;
 
     @DurationUnit(ChronoUnit.SECONDS)
