@@ -8,9 +8,9 @@
 ---
  
 * [스프링 부트 핵심 기능](#스프링-부트-핵심-기능) 
-    * [자동 설정 만들기 @ConfigurationProperties](#자동-설정-만들기-@configurationproperties)
-    * [SpringApplication](#springApplication) 
-    * [외부 설정](#외부-설정) 
+    * [자동 설정 만들기 @ConfigurationProperties](#자동설정-만들기-@ConfigurationProperties)
+    * [SpringApplication](#SpringApplication) 
+    * [외부설정](#외부설정) 
     * [프로파일](#프로파일) 
     * [로깅](#로깅) 
     * 테스트 
