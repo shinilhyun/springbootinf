@@ -60,7 +60,7 @@ Reference :  <https://docs.spring.io/spring-boot/docs/current/reference/htmlsing
 ---     
 외부설정
 ---
-Reference : <https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-c onfig> 
+Reference : <https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config> 
  
  사용할 수 있는 외부 설정 
 
@@ -130,7 +130,7 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
 ---
 프로파일 
 ---
-#ef06ad89aab2edc9d286b61697ff3409908d5a41
+
 * @Profile 애노테이션은 어디에? 
     * @Configuration 
     * @Component 
