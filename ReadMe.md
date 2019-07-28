@@ -4,7 +4,7 @@
 * 스프링 부트를 사용하여 웹 애플리케이션을 개발
 * 스프링 부트를 사용하여 여러 데이터 기술과 연동
 * 스프링 부트 애플리케이션의 운영 정보를 관리하고 모니터링 
-* Spring Boot, Maven, MySQL, PostgreSQL, redis, mongoDB, newo4j
+* Spring Boot, Maven, JPA, MySQL, PostgreSQL, redis, mongoDB, newo4j
 ---
  
 * 스프링 부트 핵심 기능 
