@@ -37,7 +37,7 @@
     * @EnableConfigurationProperties("ShinProperties)
     * 프로퍼티 키값 자동 완성
 
-######자동설정을 위한 Dependency 
+###### 자동설정을 위한 Dependency 
 ~~~
 <dependency>
     <groupId>​org.springframework.boot​</groupId>
@@ -148,7 +148,7 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
 로깅
 ------
 
-####로깅 퍼사드 VS 로거
+#### 로깅 퍼사드 VS 로거
 * Commons Logging, SLF4j
 * JUL, Log4J2, Logback
 
@@ -164,7 +164,7 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
 
 <BR>
 
-####스프링 부트 로깅
+#### 스프링 부트 로깅
 * 기본 포맷
 * --debug (일부 핵심 라이브러리만 디버깅 모드로)
 * --trace (전부 다 디버깅 모드로)
@@ -174,7 +174,7 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
 
 <br>
 
-####커스텀 로그 설정 파일 사용하기 
+#### 커스텀 로그 설정 파일 사용하기 
 https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html 
 * Logback: logback-spring.xml(이거 추천.. Logback extention 사용가능)
     ~~~
@@ -192,10 +192,10 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.htm
     
 <br>
 
-####로거를 Log4j2로 변경하기
+#### 로거를 Log4j2로 변경하기
 * https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html#howto-configure-log4j-for-logging
 
-######의존성 exclusion 및 추가
+###### 의존성 exclusion 및 추가
 ~~~
         <dependency>
             <groupId>org.springframework.boot</groupId>
