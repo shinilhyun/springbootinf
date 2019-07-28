@@ -32,6 +32,7 @@ public class SamplecontrollerTest {
     @Test
     public void hello() {
 
+        //controller만 테스트 하고싶다!! 서비스는 목으로 대체!! 이제 서비스는 shinilhyun을 리턴!
         when(mockSampleService.getName()).thenReturn("shinilhyun");
 
         String result = testRestTemplate.getForObject("/hello", String.class);
