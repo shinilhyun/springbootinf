@@ -231,6 +231,8 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.htm
           </dependency>
     ~~~
 
+---
+
 
 - @SpringBootTest
     * @RunWith(SpringRunner.class)랑 같이 써야 함.
@@ -240,15 +242,112 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.htm
             * 서블릿 구동한 것처럼 할 수 있는데 MOCK MVC 를 이용해야함
         * RANDON_PORT, DEFINED_PORT: 내장 톰캣 사용 함.
         * NONE: 서블릿 환경 제공 안 함.
-
-
+        
+        
 - @MockBean
     * ApplicationContext에 들어있는 빈을 Mock으로 만든 객체로 교체 함.
     * 모든 @Test 마다 자동으로 리셋.
 
 
+---
+
+
+###### MockMvc를 사용하여 테스트
+~~~
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+public class SamplecontrollerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @Test
+    public void hello() throws Exception {
+        mockMvc.perform(get("/hello"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("hello ilhyun"))
+            .andDo(print());
+    }
+
+}
+~~~
+
+
+###### RANDOM_PORT와 @MockBean을 사용하여 controller test
+~~~
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+public class SamplecontrollerTest {
+
+    @Autowired
+    TestRestTemplate testRestTemplate;
+
+    //서비스는 목으로 대체하여 controller만 테스트
+    @MockBean
+    SampleService mockSampleService;
+
+    @Test
+    public void hello() {
+
+        //controller만 테스트 하고싶다!! 서비스는 목으로 대체!! 이제 서비스는 shinilhyun을 리턴!
+        when(mockSampleService.getName()).thenReturn("shinilhyun");
+
+        String result = testRestTemplate.getForObject("/hello", String.class);
+        assertThat(result).isEqualTo("hello shinilhyun");
+    }
+
+}
+~~~
+
+---
+
+#### WebTestClient 사용
+ - 장점 
+    - async 이므로 기다리지 않아도 됨 (RestTamplate 는 sync)
+    - api가 RestTamplate에 비해 쓰기 편함 (추천)
+    
+    
+- *WebTestClient 의존성 추가*
+    ~~~
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+    ~~~
+
+
+- *WebTestClient 사용 예*
+    ~~~
+    @RunWith(SpringRunner.class)
+    @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+    @AutoConfigureMockMvc
+    public class SamplecontrollerTest {
+    
+        //webTestClient 사용
+        // async 이므로 기다리지 않아도 됨 (RestTamplate = sync)
+        @Autowired
+        WebTestClient webTestClient;
+    
+        @MockBean
+        SampleService mockSampleService;
+    
+        @Test
+        public void hello() {
+            when(mockSampleService.getName()).thenReturn("shinilhyun");
+            webTestClient.get().uri("/hello").exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class).isEqualTo("hello shinilhyun");
+        }
+    
+    }
+    ~~~
+ 
+---
+
 - 슬라이스 테스트
-    - 레이어 별로 잘라서 테스트하고 싶을 때
+    - 레이어 별로 잘라서 테스트하고 싶을 때 *(난 테스트 하고 싶은 것만 등록하고 싶다.)*
     - @JsonTest
     - @WebMvcTest
     - @WebFluxTest
