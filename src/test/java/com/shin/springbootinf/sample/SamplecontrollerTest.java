@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.jayway.jsonpath.Criteria.where;
@@ -23,8 +24,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class SamplecontrollerTest {
 
+    //webTestClient 사용
+    // async 이므로 기다리지 않아도 됨 (RestTamplate = sync)
+    // 의존성 추가
+    /**
+     *          <dependency>
+     *             <groupId>org.springframework.boot</groupId>
+     *             <artifactId>spring-boot-starter-webflux</artifactId>
+     *         </dependency>
+     */
     @Autowired
-    TestRestTemplate testRestTemplate;
+    WebTestClient webTestClient;
 
     @MockBean
     SampleService mockSampleService;
@@ -34,9 +44,10 @@ public class SamplecontrollerTest {
 
         //controller만 테스트 하고싶다!! 서비스는 목으로 대체!! 이제 서비스는 shinilhyun을 리턴!
         when(mockSampleService.getName()).thenReturn("shinilhyun");
+        webTestClient.get().uri("/hello").exchange()
+            .expectStatus().isOk()
+            .expectBody(String.class).isEqualTo("hello shinilhyun");
 
-        String result = testRestTemplate.getForObject("/hello", String.class);
-        assertThat(result).isEqualTo("hello shinilhyun");
     }
 
 }
