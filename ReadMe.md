@@ -354,3 +354,47 @@ public class SamplecontrollerTest {
     - @DataJpaTest
     - ...
 
+---
+
+
+- 기타 테스트 유틸..
+    - OutputCapture
+    - TestPropertyValues
+    - TestRestTemplate
+    - ConfigFileApplicationContextInitializer
+
+#### OutputCapture
+
+- 로그를 비롯해서 콘솔에 찍이는 모든 것 (기록)검사 가능
+
+
+- *OutputCapture 사용 예*
+    ~~~
+    @RunWith(SpringRunner.class)
+    @WebMvcTest(Samplecontroller.class)
+    public class SamplecontrollerTest {
+    
+        @Rule
+        public OutputCapture outputCapture = new OutputCapture();
+    
+        @MockBean
+        SampleService mockSampleService;
+    
+        @Autowired
+        MockMvc mockMvc;
+    
+        @Test
+        public void hello() throws Exception {
+    
+            when(mockSampleService.getName()).thenReturn("shinilhyun");
+    
+            mockMvc.perform(get("/hello"))
+                .andExpect(content().string("hello shinilhyun"));
+    
+            assertThat(outputCapture.toString())
+                .contains("shinilhyun")
+                .contains("skip");
+        }
+    
+    }
+    ~~~
