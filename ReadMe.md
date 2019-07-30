@@ -538,3 +538,33 @@ public void createUser_XML() throws Exception {
 ```
 
 ---
+
+### 정적 리소스 지원
+
+정적 리소스 맵핑 `````“ /**”`````  
+- 기본 리소스 위치  
+    - ```classpath:/static```  
+    - ```classpath:/public```
+    - ```classpath:/resources/```
+    - ```classpath:/META-INF/resources```
+    - _예) `````“/hello.html”`````요청이 들어오면  => ````/static/hello.html````  
+    - ```spring.mvc.static-path-pattern```: 맵핑 설정 변경 가능
+    - ```spring.mvc.static-locations```: 리소스 찾을 위치 변경 가능
+- Last-Modified 헤더를 보고 304 응답을 보냄.
+- ```ResourceHttpRequestHandler```가 처리함.
+    - ```WebMvcConfigurer```의 ```addRersourceHandlers```로 커스터마이징 할 수 있음  
+
+
+#### /m/으로 시작하는 경로 설정
+~~~java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/m/**")
+            .addResourceLocations("classpath:/m/")
+            .setCachePeriod(20);
+    }
+}
+~~~
