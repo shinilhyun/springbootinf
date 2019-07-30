@@ -450,11 +450,38 @@ Spring-Boot-Devtools
 
 Reference : https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#spring-web  
 
-스프링 부트 MVC  
-자동 설정으로 제공하는 여러 기본 기능 (앞으로 살펴볼 예정)  
-스프링 MVC 확장  
-@Configuration + WebMvcConfigurer  
-스프링 MVC 재정의  
-@Configuration + @EnableWebMvc  
+스프링 부트 MVC의 자동 설정으로 제공하는 여러 기본 기능을 알아보자
+  
+#### 스프링 MVC 확장
+스프링 MVC가 제공하는 기능을 사용하면서 추가적으로 더 설정하고 싶다      
+@Configuration + WebMvcConfigurer
+
+#### 스프링 MVC 재정의  
+@Configuration + @EnableWebMvc
+만약 ```@EnableWebMvc``` 사용하여 설정하면 스프링 웹 MVC가 설정한 것들을 사용안함(직접 다 설정해야함)
+이런 경우는 거의 사용 안할듯..  
 
 
+#### HttpMessageConverters
+Reference : https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#mvc-config-message-converters  
+ 스프링에서 제공하는 스프링 MVC의 인터페이스 중 하나  
+ HTTP 요청 본문을 객체로 변경하거나, 객체를 HTTP 응답 본문으로 변경할 때 사용   
+_{“username”:”keesun”, “password”:”123”} <-> User_  
+
+- @ReuqestBody
+- @ResponseBody
+  
+스프링 부트
+- 뷰 리졸버 설정 제공
+- HttpMessageConvertersAutoConfiguration
+
+#### XML 메시지 컨버터 추가하기
+~~~html
+<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-xml</artifactId>
+</dependency>
+~~~
+
+
+---
