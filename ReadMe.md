@@ -464,6 +464,7 @@ Reference : https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-re
 
 #### HttpMessageConverters
 Reference : https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#mvc-config-message-converters  
+ 
  스프링에서 제공하는 스프링 MVC의 인터페이스 중 하나  
  HTTP 요청 본문을 객체로 변경하거나, 객체를 HTTP 응답 본문으로 변경할 때 사용   
 _{“username”:”keesun”, “password”:”123”} <-> User_  
@@ -471,17 +472,69 @@ _{“username”:”keesun”, “password”:”123”} <-> User_
 - @ReuqestBody
 - @ResponseBody
   
-스프링 부트
-- 뷰 리졸버 설정 제공
+---
+
+#### ViewResolve
+
+스프링 MVC의 ```Contents NgotiationgViewResolver```가   
+요청이 들어오면 요청의 응답을 만들 수 있는 모든 뷰를 찾아냄  
+최종적으로 헤더가 원하는 ```Accept view```를 찾아서 응답  
+```Accept header``` 가 있으면 이걸 토대로 응답타입을 찾음  
+_ex) 만약 없으면 ```/path?format=pdf``` 와 같은 정보로 파악_
+
+
+- ViewResolve 설정 제공
 - HttpMessageConvertersAutoConfiguration
 
 #### XML 메시지 컨버터 추가하기
-~~~html
+미디어타입이 ```xml```인 경우는 컨퍼터를 추가해줘야 자동 변환을 해준다  
+```html
 <dependency>
-    <groupId>com.fasterxml.jackson.dataformat</groupId>
-    <artifactId>jackson-dataformat-xml</artifactId>
+   <groupId>com.fasterxml.jackson.dataformat</groupId>
+   <artifactId>jackson-dataformat-xml</artifactId>
+   <version>2.9.6</version>
 </dependency>
-~~~
+```
 
+### 응답이 JSON 형실일 때 Test Case
+```java
+@Test
+public void createUser_JSON() throws Exception {
+
+    String userJson = "{\n" +
+        "\"username\":\"ilhyun\",\n" +
+        "  \"password\" : \"123\"\n" +
+        "}";
+
+    mockMvc.perform(post("/users/create")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .accept(MediaType.APPLICATION_JSON_UTF8)
+        .content(userJson))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.username", is(equalTo("ilhyun"))))
+        .andExpect(jsonPath("$.password", is(equalTo("123"))));
+}
+```
+
+### 응답이 XML 형실일 때 Test Case
+```jackson-dataformat-xml 의존성 필요```
+```java
+@Test
+public void createUser_XML() throws Exception {
+
+    String userJson = "{\n" +
+        "\"username\":\"ilhyun\",\n" +
+        "  \"password\" : \"123\"\n" +
+        "}";
+  
+    mockMvc.perform(post("/users/create")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .accept(MediaType.APPLICATION_XML)
+        .content(userJson))
+        .andExpect(status().isOk())
+        .andExpect(xpath("/User/username").string("ilhyun"))
+        .andExpect(xpath("/User/password").string("123"));
+}
+```
 
 ---
