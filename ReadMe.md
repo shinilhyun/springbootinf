@@ -14,9 +14,9 @@
     * [프로파일](#프로파일) 
     * [로깅](#로깅) 
     * [테스트](#테스트)
-    * Spring-Boot-Devtools 
-* 각종 기술 연동 
-    * 스프링 웹 MVC 
+    * [Spring-Boot-Devtools](#spring-boot-devtools) 
+* [각종 기술 연동](#각종-기술-연동) 
+    * [스프링 웹 MVC](스프링-웹-mvc) 
     * 스프링 데이터 
     * 스프링 시큐리티 
     * REST 클라이언트 
@@ -41,7 +41,7 @@
     * 프로퍼티 키값 자동 완성
 
 ###### 자동설정을 위한 Dependency 
-~~~
+~~~html
 <dependency>
     <groupId>​org.springframework.boot​</groupId>
     <artifactId>​spring-boot-configuration-processor​</artifactId>    
@@ -68,41 +68,41 @@ Reference :  <https://docs.spring.io/spring-boot/docs/current/reference/htmlsing
 ----------------
 Reference : <https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config> 
  
- 사용할 수 있는 외부 설정 
+ 
+#### 사용할 수 있는 외부 설정
+* properties 
+* YAML 
+* 환경 변수 
+* 커맨드 라인 아규먼트   
+ 
+ 
+### 프로퍼티 우선 순위
 
-    * properties 
-    * YAML 
-    * 환경 변수 
-    * 커맨드 라인 아규먼트 
-    
-<br> 
- 프로퍼티 우선 순위
+1. 유저 홈 디렉토리에 있는 spring-boot-dev-tools.properties 
+2. 테스트에 있는 @TestPropertySource 
+3. @SpringBootTest 애노테이션의 properties 애트리뷰트 
+4. 커맨드 라인 아규먼트 
+5. SPRING_APPLICATION_JSON (환경 변수 또는 시스템 프로티) 에 들어있는 프로퍼티 
+6. ServletConfig 파라미터 
+7. ServletContext 파라미터 
+8. java:comp/env JNDI 애트리뷰트 
+9. System.getProperties() 자바 시스템 프로퍼티 
+10.OS 환경 변수 
+11.RandomValuePropertySource 
+12.JAR 밖에 있는 특정 프로파일용 application properties 
+13.JAR 안에 있는 특정 프로파일용 application properties 
+14.JAR 밖에 있는 application properties 
+15.JAR 안에 있는 application properties 
+16.@PropertySource 
+17.기본 프로퍼티 (SpringApplication.setDefaultProperties)   
   
-    1. 유저 홈 디렉토리에 있는 spring-boot-dev-tools.properties 
-    2. 테스트에 있는 @TestPropertySource 
-    3. @SpringBootTest 애노테이션의 properties 애트리뷰트 
-    4. 커맨드 라인 아규먼트 
-    5. SPRING_APPLICATION_JSON (환경 변수 또는 시스템 프로티) 에 들어있는 프로퍼티 
-    6. ServletConfig 파라미터 
-    7. ServletContext 파라미터 
-    8. java:comp/env JNDI 애트리뷰트 
-    9. System.getProperties() 자바 시스템 프로퍼티 
-    10.OS 환경 변수 
-    11.RandomValuePropertySource 
-    12.JAR 밖에 있는 특정 프로파일용 application properties 
-    13.JAR 안에 있는 특정 프로파일용 application properties 
-    14.JAR 밖에 있는 application properties 
-    15.JAR 안에 있는 application properties 
-    16.@PropertySource 
-    17.기본 프로퍼티 (SpringApplication.setDefaultProperties) 
- 
- <br>
-application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
- 
-    1. file:./config/ 
-    2. file:./ 
-    3. classpath:/config/ 
-    4. classpath:/ 
+  
+### application.properties 우선 순위 
+(높은게 낮은걸 덮어 쓴다.) 
+1. file:./config/ 
+2. file:./ 
+3. classpath:/config/ 
+4. classpath:/ 
  
 * 랜덤값 설정하기 
     * ${random.*} 
@@ -112,40 +112,40 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
      * name = ilhyun 
      * fullName = ${name} shin
  
-<br>
- 타입-세이프 프로퍼티 @ConfigurationProperties
-  
-    * 여러 프로퍼티를 묶어서 읽어올 수 있음 
-    * 빈으로 등록해서 다른 빈에 주입할 수 있음 
-        * @EnableConfigurationProperties 
-        * @Component ○ @Bean 
-        * 융통성 있는 바인딩 
-        * context-path (케밥) 
-        * context_path (언드스코어) 
-        * contextPath (캐멀) 
-        * CONTEXTPATH 
-    * 프로퍼티 타입 컨버전 
-        * @DurationUnit
-    * 프로퍼티 값 검증 
-        * @Validated 
-        * JSR-303 (@NotNull, ...) 
-    * 메타 정보 생성 
-    * @Value 
-        * SpEL 을 사용할 수 있지만... 
-        * 위에 있는 기능들은 전부 사용 못함. 
+ 
+#### 타입-세이프 프로퍼티 @ConfigurationProperties  
+* 여러 프로퍼티를 묶어서 읽어올 수 있음 
+* 빈으로 등록해서 다른 빈에 주입할 수 있음 
+    * @EnableConfigurationProperties 
+    * @Component ○ @Bean 
+    * 융통성 있는 바인딩 
+    * context-path (케밥) 
+    * context_path (언드스코어) 
+    * contextPath (캐멀) 
+    * CONTEXTPATH 
+* 프로퍼티 타입 컨버전 
+    * @DurationUnit
+* 프로퍼티 값 검증 
+    * @Validated 
+    * JSR-303 (@NotNull, ...) 
+* 메타 정보 생성 
+* @Value 
+    * SpEL 을 사용할 수 있지만... 
+    * 위에 있는 기능들은 전부 사용 못함. 
+ 
   
 --- ---
 프로파일 
 ---
 
-* @Profile 애노테이션은 어디에? 
-    * @Configuration 
-    * @Component 
+#### @Profile 애노테이션은 어디에? 
+* @Configuration 
+* @Component 
 
-* 어떤 프로파일을 활성화 할 것인가? 
-    * spring.profiles.active 어떤 프로파일을 추가할 것인가? 
-    * spring.profiles.include 프로파일용 프로퍼티 
-    * application-{profile}.properties 
+#### 어떤 프로파일을 활성화 할 것인가? 
+* spring.profiles.active 어떤 프로파일을 추가할 것인가? 
+* spring.profiles.include 프로파일용 프로퍼티 
+* application-{profile}.properties 
 
 --- ---
 로깅
@@ -153,11 +153,9 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
 
 #### 로깅 퍼사드 VS 로거
 * Commons Logging, SLF4j
-* JUL, Log4J2, Logback
-
-    _최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서)_
+* JUL, Log4J2, Logback  
+_최종적으론 Logback이 로그를 찍게됨(Commons Logging, SLF4j 통해서)_
     
-<br>
 
 #### 스프링 5에 로거 관련 변경 사항
 * https://docs.spring.io/spring/docs/5.0.0.RC3/spring-framework-reference/overview.html#overview-logging
@@ -165,7 +163,6 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
     * Commons Logging -> SLF4j or Log4j2
     * pom.xml에 exclusion 안해도 됨.
 
-<BR>
 
 #### 스프링 부트 로깅
 * 기본 포맷
@@ -180,7 +177,7 @@ application.properties 우선 순위 (높은게 낮은걸 덮어 쓴다.)
 #### 커스텀 로그 설정 파일 사용하기 
 https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html 
 * Logback: logback-spring.xml(이거 추천.. Logback extention 사용가능)
-    ~~~
+    ~~~html
     <?xml version="1.0" encoding="UTF-8"?>
     <configuration>
         <include resource="org/springframework/boot/logging/logback/base.xml"/>
@@ -199,7 +196,7 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.htm
 * https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.html#howto-configure-log4j-for-logging
 
 ###### 의존성 exclusion 및 추가
-~~~
+~~~html
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -223,7 +220,7 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.htm
 
 - 시작은 일단 spring-boot-starter-test를 추가하는 것 부터
     * test 스콥으로 추가.
-    ~~~
+    ~~~html
         <dependency>
               <groupId>org.springframework.boot</groupId>
               <artifactId>spring-boot-starter-test</artifactId>
@@ -253,7 +250,7 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.htm
 
 
 ###### MockMvc를 사용하여 테스트
-~~~
+~~~java
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
@@ -275,7 +272,7 @@ public class SamplecontrollerTest {
 
 
 ###### RANDOM_PORT와 @MockBean을 사용하여 controller test
-~~~
+~~~java
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -310,7 +307,7 @@ public class SamplecontrollerTest {
     
     
 - *WebTestClient 의존성 추가*
-    ~~~
+    ~~~html
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-webflux</artifactId>
@@ -319,7 +316,7 @@ public class SamplecontrollerTest {
 
 
 - *WebTestClient 사용 예*
-    ~~~
+    ~~~java
     @RunWith(SpringRunner.class)
     @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
     @AutoConfigureMockMvc
@@ -368,33 +365,88 @@ public class SamplecontrollerTest {
 - 로그를 비롯해서 콘솔에 찍이는 모든 것 (기록)검사 가능
 
 
-- *OutputCapture 사용 예*
-    ~~~
-    @RunWith(SpringRunner.class)
-    @WebMvcTest(Samplecontroller.class)
-    public class SamplecontrollerTest {
-    
-        @Rule
-        public OutputCapture outputCapture = new OutputCapture();
-    
-        @MockBean
-        SampleService mockSampleService;
-    
-        @Autowired
-        MockMvc mockMvc;
-    
-        @Test
-        public void hello() throws Exception {
-    
-            when(mockSampleService.getName()).thenReturn("shinilhyun");
-    
-            mockMvc.perform(get("/hello"))
-                .andExpect(content().string("hello shinilhyun"));
-    
-            assertThat(outputCapture.toString())
-                .contains("shinilhyun")
-                .contains("skip");
-        }
-    
+####OutputCapture 사용 예
+~~~java
+@RunWith(SpringRunner.class)
+@WebMvcTest(Samplecontroller.class)
+public class SamplecontrollerTest {
+
+    @Rule
+    public OutputCapture outputCapture = new OutputCapture();
+
+    @MockBean
+    SampleService mockSampleService;
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @Test
+    public void hello() throws Exception {
+
+        when(mockSampleService.getName()).thenReturn("shinilhyun");
+
+        mockMvc.perform(get("/hello"))
+            .andExpect(content().string("hello shinilhyun"));
+
+        assertThat(outputCapture.toString())
+            .contains("shinilhyun")
+            .contains("skip");
     }
-    ~~~
+
+}
+~~~
+
+
+---
+
+Spring-Boot-Devtools
+---
+
+**스프링 부트가 제공하는 optional 한 tool**
+
+주로 개발 시 캐쉬 기능을 꺼놓거나 파일 변경 시 자동 재구동 등의 기능을 제공한다
+
+##### 의존성 추가
+```html
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+</dependency>
+```
+
+### 주요기능 
+
+- 캐시 설정을 개발 환경에 맞게 변경.(가장 기본적인 기능)  
+
+
+- 클래스패스에 있는 파일이 변경 될 때마다 자동으로 재시작
+    - 직접 껐다 켜는거 (cold starts)보다 빠른다. 왜?  
+    - 릴로딩 보다는 느리다. (JRebel 같은건 아님)  
+    - 리스타트 하고 싶지 않은 리소스는? spring.devtools.restart.exclude  
+    - 리스타트 기능 끄려면? spring.devtools.restart.enabled = false  
+
+
+- 라이브 릴로드? 리스타트 했을 때 브라우저 자동 리프레시 하는 기능
+    - 브라우저 플러그인 설치해야 함.  
+    - 라이브 릴로드 서버 끄려면? spring.devtools.liveload.enabled = false  
+
+
+- 글로벌 설정  
+    - Dev-Tools 가 의존성 추가되어 있으면 아래의 설정이 1순위
+    - ~/.spring-boot-devtools.properties
+
+      
+- 리모트 애플리케이션(비추)
+
+> 가끔 Reload가 실패하거나 껏다 자동으로 리로드하는 것을 선호하지 않아서 자주 쓰진 않을 것 같다.
+> 원래 FrontEnd 쪽에서 많이 쓰는 기능이 Spring Boot에도 있기에 작성해 봄
+
+---
+각종 기술 연동
+===
+   
+스프링 웹 MVC
+---
+
+
+
