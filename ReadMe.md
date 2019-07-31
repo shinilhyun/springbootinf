@@ -16,7 +16,7 @@
     * [테스트](#테스트)
     * [Spring-Boot-Devtools](#spring-boot-devtools) 
 * [각종 기술 연동](#각종-기술-연동) 
-    * [스프링 웹 MVC](스프링-웹-mvc) 
+    * [스프링 웹 MVC](스프링-웹-MVC) 
     * 스프링 데이터 
     * 스프링 시큐리티 
     * REST 클라이언트 
@@ -218,44 +218,47 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/howto-logging.htm
 테스트
 ---
 
-- 시작은 일단 spring-boot-starter-test를 추가하는 것 부터
-    * test 스콥으로 추가.
-    ~~~html
-        <dependency>
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-starter-test</artifactId>
-              <scope>test</scope>
-          </dependency>
-    ~~~
+시작은 일단 spring-boot-starter-test를 추가하는 것 부터  
+    
+   
+##### Test 의존성 스코프로 추가
+```html
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-test</artifactId>
+  <scope>test</scope>
+</dependency>
+```
+
+
+---  
+
+**@SpringBootTest**    
+  ```@RunWith(SpringRunner.class)```랑 같이 써야 함.  
+  빈 설정 파일은 설정을 안해주나? 알아서 찾음. ```(@SpringBootApplication)```  
+ * __webEnvironment__
+    * ```MOCK```: mock servlet environment. 내장 톰캣 구동 안 함.
+        * 서블릿 구동한 것처럼 할 수 있는데 ```MOCK MVC``` 를 이용해야함
+    * ```RANDON_PORT```, ```DEFINED_PORT```: 내장 톰캣 사용 함.
+    * ```NONE```: 서블릿 환경 제공 안 함.
+        
+        
+- **@MockBean**
+    * ```ApplicationContext```에 들어있는 빈을 ```Mock```으로 만든 객체로 교체 함.
+    * 모든 ```@Test``` 마다 자동으로 리셋.
+
 
 ---
 
 
-- @SpringBootTest
-    * @RunWith(SpringRunner.class)랑 같이 써야 함.
-    * 빈 설정 파일은 설정을 안해주나? 알아서 찾음. (@SpringBootApplication)
-    * webEnvironment
-        * MOCK: mock servlet environment. 내장 톰캣 구동 안 함.
-            * 서블릿 구동한 것처럼 할 수 있는데 MOCK MVC 를 이용해야함
-        * RANDON_PORT, DEFINED_PORT: 내장 톰캣 사용 함.
-        * NONE: 서블릿 환경 제공 안 함.
-        
-        
-- @MockBean
-    * ApplicationContext에 들어있는 빈을 Mock으로 만든 객체로 교체 함.
-    * 모든 @Test 마다 자동으로 리셋.
-
-
----
-
-
-###### MockMvc를 사용하여 테스트
-~~~java
+##### MockMvc를 사용하여 테스트
+```java
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class SamplecontrollerTest {
 
+    //서버를 구동하지 않고 mockMvc를 사용하여 테스트
     @Autowired
     MockMvc mockMvc;
 
@@ -268,11 +271,11 @@ public class SamplecontrollerTest {
     }
 
 }
-~~~
+```
 
 
-###### RANDOM_PORT와 @MockBean을 사용하여 controller test
-~~~java
+##### RANDOM_PORT와 @MockBean을 사용하여 controller test
+```java
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -296,77 +299,76 @@ public class SamplecontrollerTest {
     }
 
 }
-~~~
+```
 
 ---
 
-#### WebTestClient 사용
+### WebTestClient 사용
+ 
  - 장점 
-    - async 이므로 기다리지 않아도 됨 (RestTamplate 는 sync)
-    - api가 RestTamplate에 비해 쓰기 편함 (추천)
+    - async 이므로 기다리지 않아도 됨 _(RestTamplate 는 sync)_
+    - api가 ```RestTamplate```에 비해 쓰기 편함 (추천)
     
     
-- *WebTestClient 의존성 추가*
-    ~~~html
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-webflux</artifactId>
-    </dependency>
-    ~~~
+##### WebTestClient 의존성 추가
+```html
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-webflux</artifactId>
+</dependency>
+```
 
 
-- *WebTestClient 사용 예*
-    ~~~java
-    @RunWith(SpringRunner.class)
-    @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-    @AutoConfigureMockMvc
-    public class SamplecontrollerTest {
-    
-        //webTestClient 사용
-        // async 이므로 기다리지 않아도 됨 (RestTamplate = sync)
-        @Autowired
-        WebTestClient webTestClient;
-    
-        @MockBean
-        SampleService mockSampleService;
-    
-        @Test
-        public void hello() {
-            when(mockSampleService.getName()).thenReturn("shinilhyun");
-            webTestClient.get().uri("/hello").exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class).isEqualTo("hello shinilhyun");
-        }
-    
+##### WebTestClient 사용 예
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+public class SamplecontrollerTest {
+
+    //webTestClient 사용
+    // async 이므로 기다리지 않아도 됨 (RestTamplate = sync)
+    @Autowired
+    WebTestClient webTestClient;
+
+    @MockBean
+    SampleService mockSampleService;
+
+    @Test
+    public void hello() {
+        when(mockSampleService.getName()).thenReturn("shinilhyun");
+        webTestClient.get().uri("/hello").exchange()
+            .expectStatus().isOk()
+            .expectBody(String.class).isEqualTo("hello shinilhyun");
     }
-    ~~~
+
+}
+```
  
 ---
 
-- 슬라이스 테스트
-    - 레이어 별로 잘라서 테스트하고 싶을 때 *(난 테스트 하고 싶은 것만 등록하고 싶다.)*
-    - @JsonTest
-    - @WebMvcTest
-    - @WebFluxTest
-    - @DataJpaTest
-    - ...
+### 슬라이스 테스트
+
+###### 레이어 별로 잘라서 테스트하고 싶을 때 *(난 테스트 하고 싶은 것만 등록하고 싶다.)*
+- @JsonTest
+- @WebMvcTest
+- @WebFluxTest
+- @DataJpaTest
+- ...
 
 ---
 
+### 기타 테스트 유틸  
+- OutputCapture
+- TestPropertyValues
+- TestRestTemplate
+- ConfigFileApplicationContextInitializer
 
-- 기타 테스트 유틸..
-    - OutputCapture
-    - TestPropertyValues
-    - TestRestTemplate
-    - ConfigFileApplicationContextInitializer
+#### OutputCaptur  
+로그를 비롯해서 콘솔에 찍이는 모든 것 (기록)검사 가능  
 
-#### OutputCapture
-
-- 로그를 비롯해서 콘솔에 찍이는 모든 것 (기록)검사 가능
-
-
-####OutputCapture 사용 예
-~~~java
+##### OutputCapture 사용 예  
+```java
 @RunWith(SpringRunner.class)
 @WebMvcTest(Samplecontroller.class)
 public class SamplecontrollerTest {
@@ -394,7 +396,7 @@ public class SamplecontrollerTest {
     }
 
 }
-~~~
+```
 
 
 ---
@@ -402,9 +404,12 @@ public class SamplecontrollerTest {
 Spring-Boot-Devtools
 ---
 
-**스프링 부트가 제공하는 optional 한 tool**
+### Spring Boot Devtools?
 
-주로 개발 시 캐쉬 기능을 꺼놓거나 파일 변경 시 자동 재구동 등의 기능을 제공한다
+>**스프링 부트가 제공하는 optional 한 tool**  
+주로 캐쉬 기능을 꺼놓거나 자동 재구동 등의 기능을 제공한다
+
+---
 
 ##### 의존성 추가
 ```html
@@ -421,19 +426,19 @@ Spring-Boot-Devtools
 
 - 클래스패스에 있는 파일이 변경 될 때마다 자동으로 재시작
     - 직접 껐다 켜는거 (cold starts)보다 빠른다. 왜?  
-    - 릴로딩 보다는 느리다. (JRebel 같은건 아님)  
-    - 리스타트 하고 싶지 않은 리소스는? spring.devtools.restart.exclude  
-    - 리스타트 기능 끄려면? spring.devtools.restart.enabled = false  
+    - 릴로딩 보다는 느리다. (```JRebel``` 같은건 아님)  
+    - 리스타트 하고 싶지 않은 리소스는? ```spring.devtools.restart.exclude```  
+    - 리스타트 기능 끄려면? ```spring.devtools.restart.enabled = false```  
 
 
 - 라이브 릴로드? 리스타트 했을 때 브라우저 자동 리프레시 하는 기능
     - 브라우저 플러그인 설치해야 함.  
-    - 라이브 릴로드 서버 끄려면? spring.devtools.liveload.enabled = false  
+    - 라이브 릴로드 서버 끄려면? ```spring.devtools.liveload.enabled = false```  
 
 
 - 글로벌 설정  
     - Dev-Tools 가 의존성 추가되어 있으면 아래의 설정이 1순위
-    - ~/.spring-boot-devtools.properties
+    - ```~/.spring-boot-devtools.properties```
 
       
 - 리모트 애플리케이션(비추)
@@ -476,25 +481,22 @@ _{“username”:”keesun”, “password”:”123”} <-> User_
 
 #### ViewResolve
 
-스프링 MVC의 ```Contents NgotiationgViewResolver```가   
-요청이 들어오면 요청의 응답을 만들 수 있는 모든 뷰를 찾아냄  
-최종적으로 헤더가 원하는 ```Accept view```를 찾아서 응답  
-```Accept header``` 가 있으면 이걸 토대로 응답타입을 찾음  
+> 뷰 영역 구현
+
+컨트롤러는 최종적으로 결과를 출력할 뷰와 뷰에 전달할 객체를 담고 있는 ```ModelAndView``` 객체를 리턴한다.  
+```DispatherServlet```은 ```ViewResolver```를 사용하여 결과를 출력할 ```View 객체```를 구하고, 구한 View 객체를 이용하여 내용을 생성한다.
+
+스프링 MVC의 ```Contents NgotiationgViewResolver```가 
+요청이 들어오면 요청의 응답을 만들 수 있는 모든 뷰를 찾아내고  
+최종적으로 헤더가 원하는 ```Accept view```를 찾아서 응답한다.  
+  
+```Accept header``` 가 있으면 이걸 토대로 응답타입을 찾는다.  
 _ex) 만약 없으면 ```/path?format=pdf``` 와 같은 정보로 파악_
 
 
 - ViewResolve 설정 제공
 - HttpMessageConvertersAutoConfiguration
 
-#### XML 메시지 컨버터 추가하기
-미디어타입이 ```xml```인 경우는 컨퍼터를 추가해줘야 자동 변환을 해준다  
-```html
-<dependency>
-   <groupId>com.fasterxml.jackson.dataformat</groupId>
-   <artifactId>jackson-dataformat-xml</artifactId>
-   <version>2.9.6</version>
-</dependency>
-```
 
 ### 응답이 JSON 형실일 때 Test Case
 ```java
@@ -514,6 +516,14 @@ public void createUser_JSON() throws Exception {
         .andExpect(jsonPath("$.username", is(equalTo("ilhyun"))))
         .andExpect(jsonPath("$.password", is(equalTo("123"))));
 }
+
+//////////////// controller///////////////////////
+
+@PostMapping("/users/create")
+public User create(@RequestBody User user) {
+    return user;
+}
+
 ```
 
 ### 응답이 XML 형실일 때 Test Case
@@ -534,6 +544,12 @@ public void createUser_XML() throws Exception {
         .andExpect(status().isOk())
         .andExpect(xpath("/User/username").string("ilhyun"))
         .andExpect(xpath("/User/password").string("123"));
+}
+
+//////////////// controller///////////////////////
+@PostMapping("/users/create")
+public User create(@RequestBody User user) {
+    return user;
 }
 ```
 
