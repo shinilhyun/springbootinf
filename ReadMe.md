@@ -572,14 +572,16 @@ public class WebConfig implements WebMvcConfigurer {
 ---
 ### 웹 JAR
 
-웹 JAR란 클라이언트에서 사용하는 js 라이브러리를 jar로 제공하는 기능이다.  
-스프링부트는 웹 JAR에 대한 기본 매핑도 제공한다. 템플릿을 이용하여 동적 컨텐츠를 생성하거나 정적 리소스에서도 웹 JAR에 있는 css나 js를 참조할 수 있다.
+>```웹 JAR```란 클라이언트에서 사용하는 ```js 라이브러리```를 ```jar```로 제공하는 기능이다.  
+스프링부트는 웹 JAR에 대한 기본 매핑도 제공한다. 템플릿을 이용하여 동적 컨텐츠를 생성하거나 정적 리소스에서도 ```웹 JAR에 있는 css나 js를 참조```할 수 있다.
 
 - 웹JAR 맵핑 ```“ /webjars/**”```  
 
+---
+
 #### jQuery를 webjars로 추가하기
 
-##### 메이븐 중앙저장소에서 제공하는 코드를 복사하여 의존성을 추가한다.
+###### 메이븐 중앙저장소에서 제공하는 코드를 복사하여 의존성을 추가한다.
 ```html
 <!-- https://mvnrepository.com/artifact/org.webjars.bower/jquery -->
 <dependency>
@@ -589,7 +591,7 @@ public class WebConfig implements WebMvcConfigurer {
 </dependency>
 ```
 
-##### 의존성을 추가한 뒤, html 파일에 제이쿼리를 추가
+###### 의존성을 추가한 뒤, html 파일에 제이쿼리를 추가
 ```html
 <script src="/webjars/jquery/dist/jquery.min.js"></script>
 <script>
@@ -599,7 +601,9 @@ public class WebConfig implements WebMvcConfigurer {
 </script>
 ```
 
-> 버전 생략하고 사용하려면  
+---
+
+#### 버전 생략하고 사용하려면  
 
 ```webjars-locator-core``` 의존성을 추가하면 리소스에서 webjars를 사용할 때 버전을 생략할 수 있다.
 
