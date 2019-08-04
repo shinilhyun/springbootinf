@@ -1,5 +1,6 @@
 package com.shin.springbootinf;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(SpringRunner.class)
@@ -18,20 +19,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SampleControllerTest {
 
     @Autowired
-    MockMvc mockmvc;
+    MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
 
     @Test
     public void hello() throws Exception {
-        //요청 "/"
-        //응답
-        //- 모델 anme : ilhyun
-        // - 뷰 이름 : hello
-        mockmvc.perform(get("/hello"))
-            .andExpect(status().isOk())
+        mockMvc.perform(get("/hello"))
             .andDo(print())
-            .andExpect(view().name("hello"))
-            .andExpect(model().attribute("name", "ilhyun"))
-            .andExpect(content().string(containsString("ilhyun")));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$._links.self").exists());
+
+
     }
 
 }

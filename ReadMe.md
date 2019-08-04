@@ -660,3 +660,99 @@ public class WebConfig implements WebMvcConfigurer {
 - 예제: https://github.com/thymeleaf/thymeleafexamples-stsm/blob/3.0-master/src/main/webapp/WEB-INF/templates/seedstartermng.html
 
 ---
+
+### HtmlUnit
+
+> HTML 템플릿 뷰 테스트를 보다 전문적으로 하자.
+> HTML을 테스트하기 위한 UNIT
+- http://htmlunit.sourceforge.net/
+- http://htmlunit.sourceforge.net/gettingStarted.html
+
+##### 의존성 추가
+```html
+<dependency>
+   <groupId>org.seleniumhq.selenium</groupId>
+   <artifactId>htmlunit-driver</artifactId>
+   <scope>test</scope>
+</dependency>
+<dependency>
+   <groupId>net.sourceforge.htmlunit</groupId>
+   <artifactId>htmlunit</artifactId>
+   <scope>test</scope>
+</dependency>
+```
+
+@Autowire WebClient
+
+#### HtmlUnit을 활용한 테스트
+```java
+@RunWith(SpringRunner.class)
+@WebMvcTest(SampleController.class)
+public class SampleControllerTest {
+
+    @Autowired
+    WebClient webClient;
+
+    @Autowired
+    MockMvc mockMvc;
+
+    //htmlunit의 webClient를 이용한 테스트
+    @Test
+    public void hello() throws Exception {
+        HtmlPage page = webClient.getPage("/hello");
+        HtmlHeading1 h1 = page.getFirstByXPath("//h1");
+        assertThat(h1.getTextContent()).isEqualToIgnoringCase("ilhyun");
+    }
+
+    //MockMVC를 이용한 테스트
+    @Test
+    public void helloTestByMock() throws Exception {
+        mockMvc.perform(get("/hello"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("ilhyun")));
+    }
+
+}
+```
+
+--- 
+
+### ExceptionHandler
+
+스프링 @MVC 예외 처리 방법  
+- @ControllerAdvice
+- @ExceptionHandler
+
+스프링 부트가 제공하는 기본 예외 처리기  
+- BasicErrorController
+    - HTML과 JSON 응답 지원
+- 커스터마이징 방법
+    - ErrorController 구현
+
+커스텀 에러 페이지
+- 상태 코드 값에 따라 에러 페이지 보여주기
+- src/main/resources/static|template/error/
+- 404.html
+- 5xx.html
+- ErrorViewResolver 구현
+
+---
+
+### Hypermedia As The Engine Of Application State
+
+- 서버: 현재 리소스와 연관된 링크 정보를 클라이언트에게 제공한다.
+- 클라이언트: 연관된 링크 정보를 바탕으로 리소스에 접근한다.
+- 연관된 링크 정보
+    - Relation
+    - Hypertext Reference)
+- spring-boot-starter-hateoas 의존성 추가
+- https://spring.io/understanding/HATEOAS
+- https://spring.io/guides/gs/rest-hateoas/
+- https://docs.spring.io/spring-hateoas/docs/current/reference/html/
+
+ObjectMapper 제공
+- spring.jackson.*
+- Jackson2ObjectMapperBuilder
+
+LinkDiscovers 제공
+- 클라이언트 쪽에서 링크 정보를 Rel 이름으로 찾을때 사용할 수 있는 XPath 확장 클래스
