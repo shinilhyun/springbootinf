@@ -756,3 +756,46 @@ ObjectMapper 제공
 
 LinkDiscovers 제공
 - 클라이언트 쪽에서 링크 정보를 Rel 이름으로 찾을때 사용할 수 있는 XPath 확장 클래스
+
+---
+
+#### SOP과 CORS
+- Single-Origin Policy
+- Cross-Origin Resource Sharing
+
+
+- Origin?
+    - URI 스키마 (http, https)
+    - hostname (whiteship.me, localhost)
+    - 포트 (8080, 18080)
+
+스프링 MVC @CrossOrigin
+- <https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#mvc-cors>
+- @Controller나 @RequestMapping에 추가하거나
+```java
+@GetMapping("/hello")
+    @CrossOrigin(origins = "http://localhost:8180")
+    public Resource<Hello> hello() {
+        Hello hello = new Hello();
+        hello.setPrefix("Heym,");
+        hello.setName("ilhyun");
+
+        //HATEOAS 를 만족하는 api ("_links":{"self":{"href":"localhost:8080/hello"}}} 추가
+        Resource<Hello> helloResource = new Resource<>(hello);
+        helloResource.add(linkTo(methodOn(SampleController.class).hello()).withSelfRel());
+        return helloResource;
+    }
+```
+- WebMvcConfigurer 사용해서 글로벌 설정
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOrigins("http://localhost:8081");
+    }
+}
+```
+
+---

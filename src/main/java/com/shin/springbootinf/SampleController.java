@@ -1,6 +1,7 @@
 package com.shin.springbootinf;
 
 import org.springframework.hateoas.Resource;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class SampleController {
 
     @GetMapping("/hello")
+    @CrossOrigin(origins = "http://localhost:8180")
     public Resource<Hello> hello() {
         Hello hello = new Hello();
         hello.setPrefix("Heym,");
