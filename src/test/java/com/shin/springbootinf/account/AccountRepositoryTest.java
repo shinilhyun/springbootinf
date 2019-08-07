@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest    //슬라이스디비 (추천).. 인베디드 디비 사용하여 테스트 ex) h2
 //@SpringBootTest   //실제 디비 사용 (느림)
@@ -29,11 +31,18 @@ public class AccountRepositoryTest {
 
     @Test
     public void di() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DatabaseMetaData metaData = connection.getMetaData();
-            System.out.println(metaData.getURL());
-            System.out.println(metaData.getDriverName());
-            System.out.println(metaData.getUserName());
-        }
+        Account account = new Account();
+        account.setUsername("ilhyun");
+        account.setUsername("pass");
+
+        Account newAccount = accountRepository.save(account);
+
+        assertThat(newAccount).isNotNull();
+
+        Account existingAccount = accountRepository.findByUsername(newAccount.getUsername());
+        assertThat(existingAccount).isNotNull();
+
+        Account nonExistingAccount = accountRepository.findByUsername("shinilhyun");
+        assertThat(nonExistingAccount).isNull();
     }
 }
