@@ -17,7 +17,7 @@
     * [Spring-Boot-Devtools](#spring-boot-devtools) 
 * [각종 기술 연동](#각종-기술-연동) 
     * [스프링 웹 MVC](#스프링-웹-mvc) 
-    * 스프링 데이터 
+    * [스프링 데이터](#스프링-데이터) 
     * 스프링 시큐리티 
     * REST 클라이언트 
 * 스프링 부트 운영 
@@ -800,7 +800,10 @@ public class WebConfig implements WebMvcConfigurer {
 
 ---
 
-### 스프링 데이터 : 인메모리 데이터 베이스
+스프링 데이터
+---
+
+### 인메모리 데이터 베이스
 
 지원하는 인-메모리 데이터베이스  
 
@@ -927,3 +930,24 @@ SELECT * FROM account;
 - @DataJpaTest (슬라이스 테스트) 작성
 
 ---
+
+### 데이터 베이스 초기화
+
+JPA를 사용한 데이터베이스 초기화
+- ```spring.jpa.hibernate.ddl-auto```
+    - ```create```	기존에 생성되 있던 테이블들을 삭제하고 새로 만듭니다.
+    - ```create-drop```	create와 같은 동작을 하나 종료시에 DROP합니다.
+    - ```update```	변경된 부분만 반영합니다.
+    - ```validate```	테이블과 Entity가 매핑되는지 유효성 검사를 실행합니다.
+    - ```none```	초기화 동작을 사용하지 않습니다.
+- ```spring.jpa.generate-dll=true```로 설정 해줘야 동작함.
+
+>운영에서는 ```dll-auto=validate``` 로하고 ```generate-ddl=false``` 가 안전함
+
+SQL 스크립트를 사용한 데이터베이스 초기화
+- schema.sql 또는 schema-${platform}.sql
+- data.sql 또는 data-${platform}.sql
+- ${platform} 값은 spring.datasource.platform 으로 설정 가능.
+
+> 테스트 후 운영에 반영할 때는 스키마 파일을 통해 설정해주면 깔끔함
+> dll-auto=update는 개발할 때는 편하지만 운영 시에는 위험(변경된 컬럼을 삭제하지 않고 추가만 될 수 있음)
