@@ -951,3 +951,27 @@ SQL 스크립트를 사용한 데이터베이스 초기화
 
 > 테스트 후 운영에 반영할 때는 스키마 파일을 통해 설정해주면 깔끔함
 > dll-auto=update는 개발할 때는 편하지만 운영 시에는 위험(변경된 컬럼을 삭제하지 않고 추가만 될 수 있음)
+
+---
+
+### 데이터베이스 마이그레이션
+
+> Flyway와 Liquibase가 대표적인데, Flyway를 사용
+> <https://docs.spring.io/spring-boot/docs/2.0.3.RELEASE/reference/htmlsingle/#howto-execute-flyway-database-migrations-on-startup>
+
+의존성 추가
+- ```org.flywaydb:flyway-core```
+
+
+마이그레이션 디렉토리
+
+- ```db/migration``` 또는 ```db/migration/{vendor}```
+- ```spring.flyway.locations```로 변경 가능
+
+마이그레이션 파일 이름
+- V숫자__이름.sql
+- V는 꼭 대문자로.
+- 숫자는 순차적으로 (타임스탬프 권장)
+- 숫자와 이름 사이에 언더바 두 개.
+- 이름은 가능한 서술적으로.
+- 에러시 properties에 ```spring.flyway.baseline-on-migrate = true``` 추가
