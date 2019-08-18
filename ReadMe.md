@@ -1046,3 +1046,29 @@ MongoDB는 JSON 기반의 도큐먼트 데이터베이스
 -  https://docs.spring.io/spring-security/site/docs/current/reference/html/test-method.html
 
 ---
+
+## 웹 시큐리티 설정
+
+~~~java
+@Configuration
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
+       http.authorizeRequests()
+               .antMatchers("/", "/hello").permitAll()
+               .anyRequest().authenticated()
+               .and()
+           .formLogin()
+               .and()
+           .httpBasic();
+   }
+}
+~~~
+
+UserDetailsServie 구현
+- https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authentication-userdetailsservice
+
+PasswordEncoder 설정 및 사용
+- https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#core-services-password-encoding
+
+---
